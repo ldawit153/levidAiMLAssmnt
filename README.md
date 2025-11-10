@@ -30,57 +30,57 @@ It’s all rule-based — no large language models. I designed it to extract str
 ### Local
 ```bash
 uvicorn main:app --reload
-How It Works
+## How It Works
 
-Extracts the user’s name from the question.
+- **Extracts the user’s name from the question.
 
-Detects the intent (trip, phone, restaurant, cars).
+- **Detects the intent (trip, phone, restaurant, cars).
 
-Fetches that user’s messages from the data API.
+- ** Fetches that user’s messages from the data API.
 
-Runs regex + dateparser to find relevant info.
+- ** Runs regex + dateparser to find relevant info.
 
-Returns a short JSON answer, e.g.
+- ** Returns a short JSON answer, e.g.
 
 {"answer": "Sophia Al-Farsi is planning the trip to Paris on 2025-05-09."}
 
 
 Bonus 1: Design Notes (Alternatives I Considered)
 
-Using an LLM (like GPT-4) for intent detection and date parsing — faster to build but nondeterministic.
+- ** Using an LLM (like GPT-4) for intent detection and date parsing — faster to build but nondeterministic.
 
-Vector search or semantic embeddings for fuzzy retrieval — more flexible but overkill for this dataset.
+- ** Vector search or semantic embeddings for fuzzy retrieval — more flexible but overkill for this dataset.
 
-SpaCy NER — easier to maintain but required model training.
+- ** SpaCy NER — easier to maintain but required model training.
 
-Hybrid LLM + rules — probably the best balance long-term.
+- ** Hybrid LLM + rules — probably the best balance long-term.
 
-Stuck with pure rules to keep it transparent and self-contained.
+- ** Stuck with pure rules to keep it transparent and self-contained.
 
 📊 Bonus 2: Data Insights
 
 While exploring the dataset:
 
-Some messages have relative dates (“this Friday”, “next week”) → must be resolved using timestamps.
+- ** Some messages have relative dates (“this Friday”, “next week”) → must be resolved using timestamps.
 
-Future timestamps exist — they’re planned trips, not errors.
+- ** Future timestamps exist — they’re planned trips, not errors.
 
-Contains PII like phone numbers and addresses in text.
+- ** Contains PII like phone numbers and addresses in text.
 
-Mixed formatting styles (names with accents, various phone formats).
+- ** Mixed formatting styles (names with accents, various phone formats).
 
-A few clearly synthetic or test entries (e.g., fictional names/addresses).
+- ** A few clearly synthetic or test entries (e.g., fictional names/addresses).
 
-Overall, it’s realistic data that just needs normalization and PII masking.
+- ** Overall, it’s realistic data that just needs normalization and PII masking.
 
 🧾 Lessons Learned
 
-Building NLP from scratch is slow but helps you understand the logic behind LLMs.
+- ** Building NLP from scratch is slow but helps you understand the logic behind LLMs.
 
-Time normalization with dateparser was key to making relative dates accurate.
+- ** Time normalization with dateparser was key to making relative dates accurate.
 
-Cloud Run made deployment and scaling painless.
+- ** Cloud Run made deployment and scaling painless.
 
-Regex-based systems are fast and cheap — just not as “smart” as models.
+- ** Regex-based systems are fast and cheap — just not as “smart” as models.
 
 If I expanded this, I’d add a small LLM fallback for questions my rules can’t handle.
